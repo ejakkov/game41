@@ -1,0 +1,130 @@
+
+import tkinter as tk
+import math
+from tkinter import *
+n_points=0
+class p_m_game:
+    def __init__(self, master, n_points):
+        self.master = master
+        self.n_points =n_points
+        self.canvas=tk.Canvas(master,width=400, height=400)
+        self.canvas.pack()
+        self.points = []
+        self.generate_points()
+        self.player_turn=True
+        
+    def generate_points(self):
+        angle = 360 / self.n_points
+        for i in range(self.n_points):
+            x = 200 + 150 * math.cos(math.radians(angle * i))
+            y = 200 + 150 * math.sin(math.radians(angle * i))
+            point = self.canvas.create_oval(x-10, y-10, x+10, y+10, fill="white")
+            self.points.append(point)
+#....
+
+class p_a_game:
+    def __init__(self, master, n_points):
+        self.master = master
+        self.n_points =n_points
+        self.canvas=tk.Canvas(master,width=400, height=400)
+        self.canvas.pack()
+        self.points = []
+        self.generate_points()
+        self.player_turn=True
+        
+    def generate_points(self):
+        angle = 360 / self.n_points
+        for i in range(self.n_points):
+            x = 200 + 150 * math.cos(math.radians(angle * i))
+            y = 200 + 150 * math.sin(math.radians(angle * i))
+            point = self.canvas.create_oval(x-10, y-10, x+10, y+10, fill="white")
+            self.points.append(point)
+#......
+class c_m_game:
+    def __init__(self, master, n_points):
+        self.master = master
+        self.n_points =n_points
+        self.canvas=tk.Canvas(master,width=400, height=400)
+        self.canvas.pack()
+        self.points = []
+        self.generate_points()
+        self.player_turn=True
+        
+    def generate_points(self):
+        angle = 360 / self.n_points
+        for i in range(self.n_points):
+            x = 200 + 150 * math.cos(math.radians(angle * i))
+            y = 200 + 150 * math.sin(math.radians(angle * i))
+            point = self.canvas.create_oval(x-10, y-10, x+10, y+10, fill="white")
+            self.points.append(point)
+#.....
+class c_a_game:
+    def __init__(self, master, n_points):
+        self.master = master
+        self.n_points =n_points
+        self.canvas=tk.Canvas(master,width=400, height=400)
+        self.canvas.pack()
+        self.points = []
+        self.generate_points()
+        self.player_turn=True
+        
+    def generate_points(self):
+        angle = 360 / self.n_points
+        for i in range(self.n_points):
+            x = 200 + 150 * math.cos(math.radians(angle * i))
+            y = 200 + 150 * math.sin(math.radians(angle * i))
+            point = self.canvas.create_oval(x-10, y-10, x+10, y+10, fill="white")
+            self.points.append(point)
+#......
+def p_m_start():
+    l.destroy()
+    p_m_game(logs,n_points)
+
+def p_a_start():
+    l.destroy()
+    p_a_game(logs,n_points) 
+
+
+def c_m_start():
+    l.destroy()
+    c_m_game(logs,n_points) 
+
+
+def c_a_start():
+    l.destroy()
+    c_a_game(logs,n_points)
+
+
+def click_ok():
+    n=slide.get()
+    global n_points
+    n_points=n
+    slide.destroy()
+    btn_ok.destroy()
+    l.config(text="Choose who will start")
+    def click_c():
+        l.config(text="Choose algorithm")
+        button_c.config(text="ALPHA-BETA",command=lambda:[button_c.destroy(),button_p.destroy(),c_a_start()])
+        button_p.config(text="MIN-MAX",command=lambda:[button_c.destroy(),button_p.destroy(),c_m_start()])
+    button_c=Button(logs,text="COMPUTER",command=click_c)
+    button_c.pack(side='left', expand=True)
+    def click_p():
+        l.config(text="Choose algorithm")
+        button_c.config(text="ALPHA-BETA",command=lambda:[button_c.destroy(),button_p.destroy(),p_a_start()])
+        button_p.config(text="MIN-MAX",command=lambda:[button_c.destroy(),button_p.destroy(),p_m_start()])
+    button_p=Button(logs,text="PLAYER",command=click_p)
+    button_p.pack(side='right', expand=True)
+
+    
+    
+logs = tk.Tk()
+logs.title("Game 41")
+logs.geometry("400x400")
+l=Label(logs,text="Choose number of fields",font=("Arial", 12))
+l.pack()
+slide = Scale(logs, from_=15, to=25,orient=HORIZONTAL)
+slide.pack(pady=40)
+btn_ok=Button(logs,text="OK",command=click_ok)    
+btn_ok.pack()
+
+logs.mainloop()
