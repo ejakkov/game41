@@ -25,7 +25,7 @@ class player_minmax_game:
             angle = i * (360 / self.n)
             x = 200 + 150 * math.cos(math.radians(angle))
             y = 200 + 150* math.sin(math.radians(angle))
-            button = self.canvas.create_oval(x - 10, y - 10, x + 10, y + 10, fill="white")
+            button = self.canvas.create_oval(x-10,y-10, x+10,y+10,fill="white")
             self.buttons.append(button)
 
     def player_click(self, event):
@@ -62,7 +62,7 @@ class player_minmax_game:
     def draw_line(self, button1, button2):
         x1, y1 = self.canvas.coords(button1)[0:2]
         x2, y2 = self.canvas.coords(button2)[0:2]
-        line = self.canvas.create_line(x1 + 10, y1 + 10, x2 + 10, y2 + 10, fill="black")
+        line = self.canvas.create_line(x1+10,y1+10,x2+10,y2+10,fill="black")
         self.lines.append(line)
 
 def player_minmax_start():
