@@ -65,6 +65,8 @@ class player_minmax_game:
             self.canvas.itemconfig(button, fill="white")
         self.player_sods=0
         self.computer_sods=0
+        self.locked_buttons.clear()
+        self.selected_buttons.clear()
         self.player_info.config(text="player penalty: 0")
         self.computer_info.config(text="computer penalty: 0")
         self.player_turn=True
@@ -216,6 +218,8 @@ class computer_minmax_game:
             self.canvas.itemconfig(button, fill="white")
         self.player_sods=0
         self.computer_sods=0
+        self.locked_buttons.clear()
+        self.selected_buttons.clear()
         self.player_info.config(text="player penalty: 0")
         self.computer_info.config(text="computer penalty: 0")
         self.player_turn=False
@@ -366,6 +370,8 @@ class player_alphabeta_game:
             self.canvas.itemconfig(button, fill="white")
         self.player_sods=0
         self.computer_sods=0
+        self.locked_buttons.clear()
+        self.selected_buttons.clear()
         self.player_info.config(text="player penalty: 0")
         self.computer_info.config(text="computer penalty: 0")
         self.player_turn=True
@@ -517,6 +523,8 @@ class computer_alphabeta_game:
             self.canvas.itemconfig(button, fill="white")
         self.player_sods=0
         self.computer_sods=0
+        self.locked_buttons.clear()
+        self.selected_buttons.clear()
         self.player_info.config(text="player penalty: 0")
         self.computer_info.config(text="computer penalty: 0")
         self.player_turn=False
