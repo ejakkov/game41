@@ -113,13 +113,14 @@ class minmax_game:
             for j in range(i+1, len(non_locked_buttons)):
                     moves.append((non_locked_buttons[i], non_locked_buttons[j])) 
         return moves
-    
+
     def minimax(self, depth, max_turn):
-        if depth == 0 or self.n - len(self.locked_buttons) <= 1:
+        if depth == 0 or self.n - len(self.locked_buttons) <2:
             return self.player_sods-self.computer_sods
+            
         if max_turn:
             max_eval = -math.inf
-            save_c=self.computer_sods
+            save_computer_sods=self.computer_sods
             for move in self.all_possible_moves():
                 b1,b2=move
                 self.locked_buttons.append(b1)
@@ -131,11 +132,11 @@ class minmax_game:
                 self.locked_buttons.pop()
                 self.locked_buttons.pop()
                 self.lines.pop()
-                self.computer_sods=save_c
+                self.computer_sods=save_computer_sods
             return max_eval
         else:
             min_eval =math.inf
-            save_p=self.player_sods
+            save_player_sods=self.player_sods
             for move in self.all_possible_moves():
                 b1,b2=move
                 self.locked_buttons.append(b1)
@@ -147,27 +148,27 @@ class minmax_game:
                 self.locked_buttons.pop()
                 self.locked_buttons.pop()
                 self.lines.pop()
-                self.player_sods=save_p
+                self.player_sods=save_player_sods
             return min_eval
-
+    
     def get_best_move(self):
         best_score = -math.inf
         best_move = None
-        save_c=self.computer_sods
+        save_computer_sods=self.computer_sods
         for move in self.all_possible_moves():
             b1,b2=move
             self.locked_buttons.append(b1)
             self.locked_buttons.append(b2)
             self.save_line(b1,b2)
             self.check_computer()
-            eval = self.minimax(3,True)
+            eval = self.minimax(2,True)
             if eval > best_score:
                 best_score = eval
                 best_move = move
             self.locked_buttons.pop()
             self.locked_buttons.pop()
             self.lines.pop()
-            self.computer_sods=save_c
+            self.computer_sods=save_computer_sods
         return best_move
         
     def computer_turn(self):
@@ -196,7 +197,6 @@ class minmax_game:
                             self.who_won()
                         else:      
                             self.current_turn="player"           
-
             
     def draw_line(self,button1,button2):
         x1,y1=self.canvas.coords(button1)[0:2]
@@ -205,33 +205,34 @@ class minmax_game:
         self.drawn_lines.append(line)
 
     def save_line(self, button1, button2):
-        x1,y1=self.canvas.coords(button1)[0:2]
-        x2,y2=self.canvas.coords(button2)[0:2]
+        x1,y1=self.canvas.coords(button1)[:2]
+        x2,y2=self.canvas.coords(button2)[:2]
         line=(x1+10,y1+10,x2+10,y2+10)
         self.lines.append(line)
-        
+
     def check_intersections(self,line1,line2):
         x1,y1,x2,y2=line1
         x3,y3,x4,y4=line2
-        def ccw(a, b, c):
-            if(c[1]-a[1])*(b[0]-a[0])>(b[1]-a[1])*(c[0]-a[0]):
-                return True
-        if ccw((x1,y1),(x3,y3),(x4,y4))!=ccw((x2,y2),(x3,y3),(x4,y4))and ccw((x1,y1),(x2,y2),(x3,y3))!=ccw((x1,y1),(x2,y2),(x4,y4)):
-            return True 
+        cross1=(x4-x3)*(y1-y3)-(y4-y3)*(x1-x3)
+        cross2=(x4-x3)*(y2-y3)-(y4-y3)*(x2-x3)
+        cross3=(x2-x1)*(y3-y1)-(y2-y1)*(x3-x1)
+        cross4=(x2-x1)*(y4-y1)-(y2-y1)*(x4-x1)
+        if cross1*cross2<0 and cross3*cross4<0:
+            return True
+        return False
         
     def check_player(self):
-        line1=self.lines[-1]
-        for i in self.lines[0:-1]:
-            line2=i
-            if self.check_intersections(line1,line2)==True:
-                self.player_sods=self.player_sods+1
-
+        line1 = self.lines[-1]
+        for line2 in self.lines[:-1]: 
+            if self.check_intersections(line1, line2):
+                self.player_sods+=1
+                
     def check_computer(self):
-        line1=self.lines[-1]
-        for i in self.lines[0:-1]:
-            line2=i
-            if self.check_intersections(line1,line2)==True:
-                self.computer_sods=self.computer_sods+1    
+        line1 = self.lines[-1]
+        for line2 in self.lines[:-1]: 
+            if self.check_intersections(line1, line2):
+                self.computer_sods+=1 
+                   
 
 
     
@@ -394,26 +395,26 @@ class alphabeta_game:
     def check_intersections(self,line1,line2):
         x1,y1,x2,y2=line1
         x3,y3,x4,y4=line2
-        def ccw(a, b, c):
-            if(c[1]-a[1])*(b[0]-a[0])>(b[1]-a[1])*(c[0]-a[0]):
-                return True
-        if ccw((x1,y1),(x3,y3),(x4,y4))!=ccw((x2,y2),(x3,y3),(x4,y4))and ccw((x1,y1),(x2,y2),(x3,y3))!=ccw((x1,y1),(x2,y2),(x4,y4)):
-            return True 
+        cross1=(x4-x3)*(y1-y3)-(y4-y3)*(x1-x3)
+        cross2=(x4-x3)*(y2-y3)-(y4-y3)*(x2-x3)
+        cross3=(x2-x1)*(y3-y1)-(y2-y1)*(x3-x1)
+        cross4=(x2-x1)*(y4-y1)-(y2-y1)*(x4-x1)
+        if cross1*cross2<0 and cross3*cross4<0:
+            return True
+        return False
         
     def check_player(self):
-        line1=self.lines[-1]
-        for i in self.lines[0:-1]:
-            line2=i
-            if self.check_intersections(line1,line2)==True:
-                self.player_sods=self.player_sods+1
-
+        line1 = self.lines[-1]
+        for line2 in self.lines[:-1]: 
+            if self.check_intersections(line1, line2):
+                self.player_sods+=1
+                
     def check_computer(self):
-        line1=self.lines[-1]
-        for i in self.lines[0:-1]:
-            line2=i
-            if self.check_intersections(line1,line2)==True:
-                self.computer_sods=self.computer_sods+1    
-
+        line1 = self.lines[-1]
+        for line2 in self.lines[:-1]: 
+            if self.check_intersections(line1, line2):
+                self.computer_sods+=1 
+    
 
     
 
