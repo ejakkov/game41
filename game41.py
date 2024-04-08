@@ -14,7 +14,7 @@ class minmax_game:
         self.arraySelectedButtons = []
         self.arrayLockedButtons = []
         self.arrayLines = []
-        
+        self.arrayOfMoves = []
         #Virtuālo pogu un līniju masīvi, lai paātrinātu minimaksa algoritmu.
         self.arrayVirtualLines = []
         self.arrayVirtualButtons = []
@@ -60,6 +60,7 @@ class minmax_game:
         restart_btn.pack(pady=20)
         exit_btn = Button(modalWindow, text="Exit", command=self.master.quit)
         exit_btn.pack(pady=20)
+        print(len(self.arrayOfMoves))
         if self.player_sods > self.computer_sods:
             l2.config(text="Computer wins")
 
@@ -207,7 +208,6 @@ class minmax_game:
     #arrayLines - jau uzbūvētas līnijas šim pārvietošanas posmam
     #funkcija atgriež pozīcijas svaru - starpību starp AI un spēlētāja soda punktiem
     def mini_max(self, AI, recursive_level, arButtons, arLines, AI_score, player_score):
-
         if ((recursive_level >= self.AI_Level) or (len(arButtons) <= 1)):
             return player_score - AI_score
       
@@ -220,6 +220,8 @@ class minmax_game:
             lastBtn = arButtons[-1]
             for btn in arButtons[0:-1]:
                 line = (btn[0], lastBtn[0])
+                self.arrayOfMoves.append(line)
+
                 arLines.append(line)
                 AI_calculated_score = 0
                 player_calculated_score = 0
@@ -331,7 +333,7 @@ class alphabeta_game:
     self.arraySelectedButtons = []
     self.arrayLockedButtons = []
     self.arrayLines = []
-        
+    self.arrOfMoves = []
         #Virtuālo pogu un līniju masīvi, lai paātrinātu minimaksa algoritmu.
     self.arrayVirtualLines = []
     self.arrayVirtualButtons = []
@@ -376,6 +378,7 @@ class alphabeta_game:
         restart_btn.pack(pady=20)
         exit_btn = Button(modalWindow, text="Exit", command=self.master.quit)
         exit_btn.pack(pady=20)
+        print(len(self.arrOfMoves))
         if self.player_sods > self.computer_sods:
             l2.config(text="Computer wins")
 
@@ -532,6 +535,7 @@ class alphabeta_game:
         for btn in arButtons[:-1]:
             line = (btn[0], lastBtn[0])
             arLines.append(line)
+            self.arrOfMoves.append(line)
             AI_calculated_score = self.calculate_virtual_score(arLines) if AI else 0
             player_calculated_score = self.calculate_virtual_score(arLines) if not AI else 0
 
@@ -542,18 +546,19 @@ class alphabeta_game:
             move_weight = self.alpha_beta(not AI, recursive_level + 1, recurseArrayButtons, arLines, AI_score + AI_calculated_score, player_score + player_calculated_score, alpha, beta)
             if AI:
                 bestMoveWeight = max(bestMoveWeight, move_weight)
-                alpha = max(alpha, bestMoveWeight)
-                if (beta <= alpha):
-                    print('pruning')
+                if (bestMoveWeight > beta):
                     arLines.pop()
                     break
+                alpha = max(alpha, bestMoveWeight)
+
             else:
                 bestMoveWeight = min(bestMoveWeight, move_weight)
                 beta = min(beta, bestMoveWeight)
-                if (beta <= alpha):
-                    print('pruning')
+                if (bestMoveWeight < alpha):
                     arLines.pop()
                     break   
+                beta = min(beta, bestMoveWeight)
+
             arLines.pop()
         arButtons.pop()
 
