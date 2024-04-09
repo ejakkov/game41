@@ -529,6 +529,7 @@ class alphabeta_game:
         for btn in arButtons[:-1]:
             line = (btn[0], lastBtn[0])
             arLines.append(line)
+            self.arrOfMoves.append(line)
             AI_calculated_score = self.calculate_virtual_score(arLines) if AI else 0
             player_calculated_score = self.calculate_virtual_score(arLines) if not AI else 0
             recurseArrayButtons = arButtons[:]
@@ -538,15 +539,14 @@ class alphabeta_game:
             move_weight = self.alpha_beta(not AI, recursive_level + 1, recurseArrayButtons, arLines, AI_score + AI_calculated_score, player_score + player_calculated_score, alpha, beta)
             if AI:
                 bestMoveWeight = max(bestMoveWeight, move_weight)
-                if (bestMoveWeight > beta):
+                if (bestMoveWeight >= beta):
                     arLines.pop()
                     break
                 alpha = max(alpha, bestMoveWeight)
 
             else:
                 bestMoveWeight = min(bestMoveWeight, move_weight)
-                beta = min(beta, bestMoveWeight)
-                if (bestMoveWeight < alpha):
+                if (bestMoveWeight <= alpha):
                     arLines.pop()
                     break   
                 beta = min(beta, bestMoveWeight)
