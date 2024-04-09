@@ -529,7 +529,6 @@ class alphabeta_game:
         for btn in arButtons[:-1]:
             line = (btn[0], lastBtn[0])
             arLines.append(line)
-            self.arrOfMoves.append(line)
             AI_calculated_score = self.calculate_virtual_score(arLines) if AI else 0
             player_calculated_score = self.calculate_virtual_score(arLines) if not AI else 0
             recurseArrayButtons = arButtons[:]
