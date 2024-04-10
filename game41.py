@@ -269,20 +269,7 @@ class minmax_game:
             if (c[1] - a[1]) * (b[0] - a[0]) > (b[1] - a[1]) * (c[0] - a[0]):
                 return True
         if ccw((x1, y1), (x3, y3), (x4, y4)) != ccw((x2, y2), (x3, y3), (x4, y4)) and ccw((x1, y1), (x2, y2),(x3, y3)) != ccw((x1, y1),(x2, y2),(x4, y4)):
-            return True
-        
-        
-    def check_player(self):
-        line1 = self.lines[-1]
-        for line2 in self.lines[:-1]: 
-            if self.check_intersections(line1, line2):
-                self.player_sods+=1
-                
-    def check_computer(self):
-        line1 = self.lines[-1]
-        for line2 in self.lines[:-1]: 
-            if self.check_intersections(line1, line2):
-                self.computer_sods+=1 
+            return True 
 
     def calculate_score(self):
         score = 0
